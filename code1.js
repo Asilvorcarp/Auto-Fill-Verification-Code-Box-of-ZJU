@@ -50,8 +50,8 @@ var $ = window.jQuery;
 					{boolColor[i][j]="";}
 				else
 					{boolColor[i][j]=11;}
-                boolTest[i][j]=0;
-				boolGet[i][j]=0;
+                boolTest[i][j]="";
+				boolGet[i][j]="";
 			}
 		}
 		console.log(boolColor);
@@ -64,7 +64,7 @@ var $ = window.jQuery;
 			var n=1;
 			for (var i=0;i<=130-1;i++){
 				for (var j=0;j<=50-1;j++){
-					if (boolGet[i][j]==0&&boolColor[i][j]==1){
+					if (boolGet[i][j]==""&&boolColor[i][j]==11){
 						expand(i,j,n);
 						n++;
                         break;break;//for test
@@ -75,17 +75,17 @@ var $ = window.jQuery;
 
 
 		function expand(i,j,n){
-            boolGet[i][j]=1;
-            boolTest[i][j]=1;//for test
-            if(boolColor[i][j]==1){s[n]+=1;}
+            boolGet[i][j]=11;
+            boolTest[i][j]=11;//for test
+            if(boolColor[i][j]==11){s[n]+=1;}
             console.log("Expanding "+i+" "+j);
 			var iplus=[1,-1,0,0];
 			var jplus=[0,0,1,-1];
 			for(var m=-1;m<=1;m+=2){
 				var ii=i+iplus[m];
 				var jj=j+jplus[m];
-				if(0<=ii&&ii<=130-1&&0<=jj&&jj<=50-1&&boolGet[ii][jj]==0){
-					if(boolColor[ii][jj]==1){
+				if(0<=ii&&ii<=130-1&&0<=jj&&jj<=50-1&&boolGet[ii][jj]==""){
+					if(boolColor[ii][jj]==11){
 						expand(ii,jj,n);
 					}
 				}
