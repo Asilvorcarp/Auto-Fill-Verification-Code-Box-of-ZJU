@@ -19,11 +19,11 @@ var $ = window.jQuery;
 
 	function Main(){
 		var img = document.getElementById("checkpic");
-		console.log("time up");
-        $("verify").val("lalala");
-        console.log(img.src);
+		console.log("Time is up");
+        $("verify").val("lalala");//////to solve maybe by document
+        console.log(img.src);//for test
         //$("#imgCode").hide();
-		var canvas = document.createElement('canvas');
+		var canvas = document.createElement('canvas');//创建画布
 		document.body.appendChild(canvas);
 		canvas.width = 130;
 		canvas.height= 50;
@@ -31,20 +31,20 @@ var $ = window.jQuery;
 		var ctx;
 		var imgArr = [];
 
-		console.log("draw happens!!!!");
+		console.log("Draw happens!");//开始绘入img （for test）
 		if (!canvas.getContext) return;
 		ctx = canvas.getContext("2d");
 		ctx.drawImage(img, 0, 0);
 
-		console.log("getting code!!");
+		console.log("Getting code!");//for test
 		var imgData_obj = ctx.getImageData(0,0,canvas.width,canvas.height);// 获取画布上的图像像素矩阵
 		var imgData = imgData_obj.data;// 获取到的数据为一维数组，包含图像的RGBA四个通道数据
 
-		var Gmain=getTheMainColor();
+		var Gmain=getTheMainColor();//获取主要的颜色
 		function getTheMainColor(){
-			var kind=[];
-			var kindN=1;
-			var kindS=[];
+			var kind=[];//各种颜色的集合
+			var kindN=1;//颜色种类数
+			var kindS=[];//不同种颜色的面积
 			for (var i=0;i<=130-1;i++){
 				for (var j=0;j<=50-1;j++){
 					kindS.push(0);
@@ -60,7 +60,7 @@ var $ = window.jQuery;
 				}
 			}
 
-			function findTheKind(a){
+			function findTheKind(a){//找到所在颜色类型
 				for (var i=1;i<=kindN;i++){
 					if (a==kind[i]){
 						return i;
@@ -69,7 +69,7 @@ var $ = window.jQuery;
 				return 0;
 			}
 			var mainKindId = 1;
-			for (var iii=1;iii<=kindN;iii++){
+			for (var iii=1;iii<=kindN;iii++){//计算得到主要的颜色
 					if (kindS[mainKindId]<kindS[iii])
                     {mainKindId=iii;}
 			}
@@ -77,9 +77,9 @@ var $ = window.jQuery;
 		}
 
 
-		var boolColor = new Array(130);
-        var boolTest = new Array(130);
-		var boolGet = new Array(130);
+		var boolColor = new Array(130);//存储背景、数字以及轮廓的矩阵
+        var boolTest = new Array(130);//for test
+		var boolGet = new Array(130);//是否已经检测
 		for (var i=0;i<=130-1;i++){
 			boolColor[i]=new Array(50);
             boolTest[i]=new Array(50);
@@ -93,13 +93,13 @@ var $ = window.jQuery;
 				boolGet[i][j]="";
 			}
 		}
-		console.log(boolColor);
+		console.log(boolColor);//for test
 
 		var s=[0,0,0,0,0];//4个数字的面积 1-4
 
 		getTheCode1();
 
-		function getTheCode1(){
+		function getTheCode1(){//开始逐一拓展
 			var n=1;
 			for (var i=0;i<=130-1;i++){
 				for (var j=0;j<=50-1;j++){
@@ -112,7 +112,7 @@ var $ = window.jQuery;
 		}
 
 
-		function expand(i,j,n){
+		function expand(i,j,n){//使用递归 由一点拓展到整个数字 
             boolGet[i][j]=11;
             boolTest[i][j]=11;//for test
             if(boolColor[i][j]==11){s[n]+=1;}
@@ -129,16 +129,16 @@ var $ = window.jQuery;
 				}
 			}
 		}
-		console.log(s[1]+" "+s[2]+" "+s[3]+" "+s[4]);
-        console.log(boolGet);
-        console.log(boolTest);
+		console.log(s[1]+" "+s[2]+" "+s[3]+" "+s[4]);//输出4个数字的面积
+        console.log(boolGet);//for test
+        console.log(boolTest);//for test
 		function refresh(){
 
 		}
 
-		setTimeout (function ()
+		setTimeout (function ()//每3秒循环一次
 		{
-			changepica();
+			changepic();
             Main();
 		}, 3000);
 
