@@ -5,7 +5,7 @@
 // @description 自动填写浙大验证码
 // @include     http://10.203.97.155/home/book*
 // @require     https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js
-// @version     2.0
+// @version     1.2
 // @grant       none
 // @run-at      document-start
 // ==/UserScript==
