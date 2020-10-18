@@ -5,7 +5,7 @@
 // @description 自动填写浙大验证码
 // @include     http://10.203.97.155/home/book*
 // @require     https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js
-// @version     1.3
+// @version     1.4
 // @grant       none
 // @run-at      document-start
 // ==/UserScript==
@@ -19,7 +19,7 @@ var $ = window.jQuery;
     //$(".login-btn").trigger("click");
 	setTimeout (function ()
 	{Main();}, 3000);
-	
+
 	function Main(){
 		var img = document.getElementById("checkpic");
 		console.log("Time is up");
@@ -83,14 +83,16 @@ var $ = window.jQuery;
 		var ee=88;
 		var boolColor = new Array(130);//存储背景、数字以及轮廓的矩阵
 		var boolEachColor = new Array(5);//分别储存每个数字的矩阵
+		var boolEachGet = new Array(5);//分别储存每个数字get
 		for (var index=1;index<=4;index++){
 			boolEachColor[index]=new Array(130);
+			boolEachGet[index]=new Array(130);
 		}
         var boolTest = new Array(130);//for test
 		var boolGet = new Array(130);//是否已经检测
 		for (var i=0;i<=130-1;i++){
 			boolColor[i]=new Array(50);
-			for (var z=1;z<=4;z++){boolEachColor[z][i]=new Array(50);}
+			for (var z=1;z<=4;z++){boolEachColor[z][i]=new Array(50);boolEachGet[z][i]=new Array(50);}
             boolTest[i]=new Array(50);
 			boolGet[i]=new Array(50);
 			for (var j=0;j<=50-1;j++){
@@ -99,7 +101,7 @@ var $ = window.jQuery;
 				else if(imgData[4*(130*j+i)]==Gmain)
 					{boolColor[i][j]=11;}
 				else boolColor[i][j]=ee;
-				for (var index2=1;index2<=4;index2++){boolEachColor[index2][i][j]="";}
+				for (var index2=1;index2<=4;index2++){boolEachColor[index2][i][j]="";boolEachGet[index2][i][j]="";}
                 boolTest[i][j]="";
 				boolGet[i][j]="";
 			}
@@ -127,7 +129,7 @@ var $ = window.jQuery;
             boolGet[i][j]=11;
             boolTest[i][j]=11;//for test
             if(boolColor[i][j]==11){mainS[n]+=1;boolEachColor[n][i][j]=11;}
-			if(boolColor[i][j]==ee){edgeS[n]+=1;boolEachColor[n][i][j]=ee;}
+			if(boolColor[i][j]==ee){edgeS[n]+=1;boolEachColor[n][i][j]=ee;}//important
             //console.log("Expanding "+i+" "+j);//for test
 			var iplus=[1,-1,0,0];
 			var jplus=[0,0,1,-1];
@@ -141,6 +143,8 @@ var $ = window.jQuery;
 				}
 			}
 		}
+
+		if(mainS[4]==0){refresh();return;}
 
 		function getAverage(n){//获得一个数字矩阵的main和edge的均坐标作为特征
 			var mainXSum=0,mainYSum=0;
@@ -164,39 +168,74 @@ var $ = window.jQuery;
 		}
 
 		var aver=new Array(5);
-		var vector=new Array(5);//每个数字的特征矢量
-		var vectLength=new Array(5);//每个数字的特征矢量长度
+		var vector=new Array(5);//每个数字的特征矢量 1-4
+		var vectLength=new Array(5);//每个数字的特征矢量长度 1-4
+		var hole=[0];//每个数字的洞口数量 1-4
 		for(var index3=1;index3<=4;index3++){
 			aver[index3]= getAverage(index3);
 			vector[index3]=[aver[index3][1]-aver[index3][3],aver[index3][2]-aver[index3][4]];
 			vectLength[index3]=Math.pow(vector[index3][0],2)+Math.pow(vector[index3][1],2);
+			hole.push(numberOfHole(index3));
+		}
+
+
+		function numberOfHole(n){//开始逐一拓展检查洞口
+			var ans=0;
+			var iTo=130,jTo=50;
+			for (var i=0;i<=iTo-1;i++){
+				for (var j=0;j<=jTo-1;j++){
+					if (boolEachGet[n][i][j]==""&&boolEachColor[n][i][j]==""){
+						expandHole(i,j,n);
+						ans++;
+					}
+				}
+			}
+			
+			function expandHole(i,j,n){//使用递归 由一点拓展到整个hole
+				boolEachGet[n][i][j]=11;
+				//console.log("Expanding "+i+" "+j);//for test
+				var iplus=[1,-1,0,0];
+				var jplus=[0,0,1,-1];
+				for(var m=0;m<=3;m+=1){
+					var ii=i+iplus[m];
+					var jj=j+jplus[m];
+					if(0<=ii&&ii<=130-1&&0<=jj&&jj<=50-1&&boolEachGet[n][ii][jj]==""){
+						if(boolEachColor[n][ii][jj]==""||boolEachColor[n][ii][jj]==ee){
+							expandHole(ii,jj,n);
+						}
+					}
+				}
+			}
+			return ans-1;//去除背景
 		}
 
 		console.log("Main: "+mainS[1]+" "+mainS[2]+" "+mainS[3]+" "+mainS[4]);//输出4个数字的main面积
 		console.log("Edge: "+edgeS[1]+" "+edgeS[2]+" "+edgeS[3]+" "+edgeS[4]);//输出4个数字的edge面积
+		console.log(hole);//输出4个数字的hole
 		for(var index4=1;index4<=4;index4++){
 			console.log("Vect"+index4+":"+vectLength[index4]+"|"+vector[index4]);
 		}
 		console.log("----------------------------");//vector[1]+" "+vector[2]+" "+vector[3]+" "+vector[4]
 
-		//console.log(boolEachColor);//for test
+		console.log(boolEachColor);//for test
 		//console.log(boolColor);//for test
         //console.log(boolGet);//for test
         //console.log(boolTest);//for test
 
-		function refresh(){
-
-		}
-
-		setTimeout (function ()//每3秒自动刷新并且循环一次 
-		{
+		function refresh(){//刷新验证码并且递归
 			$('#checkpic').trigger("click");
-				setTimeout (function ()
+			setTimeout (function ()
 			{
 				Main();
 			}, 500);
-		}, 3000);
+		}
 
+		
+		setTimeout (function ()//每3秒自动刷新并且循环一次
+		{
+			refresh();
+		}, 3000);
+		
 
 		/*
 		for(var i=0; i<=4*6500-1; i += 4){
