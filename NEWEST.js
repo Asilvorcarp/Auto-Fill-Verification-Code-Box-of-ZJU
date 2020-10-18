@@ -106,12 +106,12 @@ var $ = window.jQuery;
 				boolGet[i][j]="";
 			}
 		}
-		
+
 
 		var mainS=[0,0,0,0,0];//4个数字的主颜色面积 1-4
 		var edgeS=[0,0,0,0,0];//4个数字的轮廓面积 1-4
 		var holeS=[0,0,0,0,0];//4个数字的孔洞面积 1-4
-		
+
 		getTheCode1();
 
 		function getTheCode1(){//开始逐一拓展
@@ -180,7 +180,7 @@ var $ = window.jQuery;
 			hole.push(numberOfHole(index5));
 		}
 
-		
+
 		function numberOfHole(n){//开始逐一拓展检查孔洞,返回孔洞数目
 			var ans=0;
 			var iTo=130,jTo=50;
@@ -193,7 +193,7 @@ var $ = window.jQuery;
 					}
 				}
 			}
-			
+
 			function expandHole(i,j,n,mode){//使用递归 由一点拓展到整个hole. Mode:1背景 2孔洞
 				boolEachGet[n][i][j]=11;
 				if(mode==2){holeS[n]+=1;}
@@ -256,7 +256,7 @@ var $ = window.jQuery;
 			if(110<=mainS[n]&&mainS[n]<=119){return 3;}
 			if(120<=mainS[n]&&mainS[n]<=130){return which245();}
 			if(131<=mainS[n]&&mainS[n]<=150){return which0689();}
-			
+
 			function which245(){
 				if(hole[n]==1){return 4;}
 				if(hole[n]==0){return which25v2();}//-choose-
@@ -271,14 +271,14 @@ var $ = window.jQuery;
 				}
 				return -1;
 			}
-			
+
 			function which0689(){
 				if(hole[n]==2){return 8;}
 				if(hole[n]==1){return which069();}
 				function which069(){//通过特征矢量方向判断
 					//getHoleS(n);
 					if(holeS[n]>=40){return 0;}
-					if(5<=holeS[n]<=<25){return which69ByVectSign;}
+					if(5<=holeS[n]&&holeS[n]<=25){return which69ByVectSign;}
 					function which69ByVectSign(){
 						if(vector[n][0]>0&&vector[n][1]<0){return 9;}
 						if(vector[n][0]<0&&vector[n][1]>0){return 6;}
@@ -287,15 +287,15 @@ var $ = window.jQuery;
 				}
 				return -1;
 			}
-			
+
 			return -1;//说明错误：自动刷新
 		}
 		for(var index6=1;index6<=4;index6++){
 			finalAns[index6]=getAns(index6);
 			if(finalAns[index6]==-1){refresh();return;}//如果出错则刷新
 		}
-		
-		
+
+
 		//特征数据流
 		console.log("Main: "+mainS[1]+" "+mainS[2]+" "+mainS[3]+" "+mainS[4]);//输出4个数字的main面积
 		console.log("Edge: "+edgeS[1]+" "+edgeS[2]+" "+edgeS[3]+" "+edgeS[4]);//输出4个数字的edge面积
@@ -321,12 +321,12 @@ var $ = window.jQuery;
 			}, 500);
 		}
 
-		
+
 		setTimeout (function ()//每3秒自动刷新并且循环一次
 		{
 			refresh();
 		}, 3000);
-		
+
 
 		/*
 		for(var i=0; i<=4*6500-1; i += 4){
