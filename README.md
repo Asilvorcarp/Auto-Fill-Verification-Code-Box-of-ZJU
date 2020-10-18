@@ -6,10 +6,10 @@ Now:Auto-Fill the verification code box of ZJU library reservation website when 
 
 The url:http://10.203.97.155/home/book (Is only accessible to ZJU students and workers)
 
------------------------------------------------------------------------By HsFish1213
+All Originated By HsFish1213
+(Did not copy anyone's work)
 
 
+Future: I would like to include http://my.zju.edu.cn/ oneday,whose code is much harder to recognize.
 
-Future:I would like to include http://my.zju.edu.cn/ oneday,whose code is much harder to recognize.
-
-Way to realize:Control the web as a Tampermonkey script.
+Way to realize: Control the web as a Tampermonkey script.
