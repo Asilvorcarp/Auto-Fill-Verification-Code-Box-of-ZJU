@@ -13,7 +13,7 @@
 var $ = window.jQuery;
 
 (function() {
-	alert("Auto-Fill the verifying box every 3 seconds.Please login now.");
+	alert("Please click login in 3 seconds.Then I'll auto-fill the verifying box every 2 seconds.");
 	//$('a.badge login-btn login_click').trigger("click");
 	//$('a.login-btn login_click').trigger("click");
     //$(".login-btn").trigger("click");
@@ -354,7 +354,7 @@ var $ = window.jQuery;
 		setTimeout (function ()//每3秒自动刷新并且循环一次
 		{
 			refresh();
-		}, 1500);
+		}, 2000);
 
 
 		/*
