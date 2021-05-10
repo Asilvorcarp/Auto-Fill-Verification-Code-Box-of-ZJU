@@ -9,7 +9,7 @@ The Url: http://10.203.97.155/home/book (Is only accessible to ZJU students and 
 ​                                                                          
 
 
-Future: I would like to include http://my.zju.edu.cn/ oneday, whose code is much harder to recognize.
+Future: I would like to include http://my.zju.edu.cn/ oneday, whose code is harder (but possible) to recognize.
 
-Way to realize: Control the web as a Tampermonkey script.
+Realization method: Control the web as a Tampermonkey script.
 
