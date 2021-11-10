@@ -5,7 +5,7 @@
 
 A good idea about Computer Graphics, which will also improve my ability of frontend programming.
 
-Now: Auto-Fill the verification code box of ZJU library reservation website when logining.
+Now: Auto-Fill the verification code box of ZJU library reservation website when loginning.
 
 The Url: http://10.203.97.155/home/book (Is only accessible to ZJU students and workers)
 
